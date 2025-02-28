@@ -5,6 +5,7 @@ import com.codev13.springkeycloakddd.client.KeycloakClient;
 import com.codev13.springkeycloakddd.config.KeycloakProperties;
 import com.codev13.springkeycloakddd.web.dto.LoginRequestDto;
 import com.codev13.springkeycloakddd.web.dto.LoginResponseDto;
+import com.codev13.springkeycloakddd.web.dto.RefreshTokenRequestDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +41,21 @@ public class AuthControllerImpl implements AuthController{
                 .build();
 
         LoginResponseDto response =  keycloakClient.getAccessToken(keycloakAuthRequest);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/refresh-token")
+    public ResponseEntity<LoginResponseDto> refreshToken(@RequestBody @Valid RefreshTokenRequestDto request) {
+        logger.info("Refreshing token for: " + request.refreshToken());
+
+        KeycloakAuthRequest keycloakAuthRequest = KeycloakAuthRequest.builder()
+                .refresh_token(request.refreshToken())
+                .client_id(keycloakProperties.getClientId())
+                .client_secret(keycloakProperties.getClientSecret())
+                .grant_type("refresh_token")
+                .build();
+
+        LoginResponseDto response = keycloakClient.getAccessToken(keycloakAuthRequest);
         return ResponseEntity.ok(response);
     }
 }

@@ -15,4 +15,5 @@ public class KeycloakAuthRequest {
     private String client_id;
     private String grant_type;
     public String client_secret;
+    private String refresh_token;
 }
