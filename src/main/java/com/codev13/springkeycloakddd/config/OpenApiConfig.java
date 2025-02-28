@@ -1,50 +1,24 @@
 package com.codev13.springkeycloakddd.config;
 
-import io.swagger.v3.oas.models.Components;
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Contact;
-import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.info.License;
-import io.swagger.v3.oas.models.security.SecurityRequirement;
-import io.swagger.v3.oas.models.security.SecurityScheme;
-import org.springframework.context.annotation.Bean;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.ArrayList;
 
 @Configuration
-public class OpenApiConfig implements WebMvcConfigurer {
-    protected  String version;
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/swagger-ui/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/springfox-swagger-ui/")
-                .resourceChain(false);
-    }
-
-    @Bean
-    public OpenAPI openAPI() {
-        SecurityScheme securityScheme = new SecurityScheme()
-                .type(SecurityScheme.Type.APIKEY)
-                .bearerFormat("JWT")
-                .scheme("bearer")
-                .in(SecurityScheme.In.HEADER)
-                .name("Authorization")
-                .description("JWT authentication token");
-        return new OpenAPI()
-                .components(new Components().addSecuritySchemes("jwtScheme", securityScheme))
-                .addSecurityItem(new SecurityRequirement().addList("jwtScheme"))
-                .info(new Info().title("Keycloak Data API Docs")
-                        .description("Keycloak Data REST API documentation")
-                        .contact(new Contact().name("Cheikh Ibrahima Dieng")
-                                .email( "barhamadieng66@gmail.com"))
-                        .license(new License().name("License of API"))
-                        .version(version))
-
-                ;
-    }
-
-
-
-
+@OpenAPIDefinition(
+        info = @Info(title = "Votre API", version = "v1"),
+        security = @SecurityRequirement(name = "bearerAuth")
+)
+@SecurityScheme(
+        name = "bearerAuth",
+        type = SecuritySchemeType.HTTP,
+        scheme = "bearer",
+        bearerFormat = "JWT"
+)
+public class OpenApiConfig {
 }
