@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: spring-keycloak-ddd
+
+  datasource:
+    url: jdbc:postgresql://localhost:8126/keycloak-ddd
+    username: amigoscode
+    password: password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8090/realms/springrealm
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.security.oauth2: DEBUG
+
+server:
+  port: 8210
+  servlet:
+    context-path: /api/v1
+
+keycloak:
+  realm: springrealm
+  auth-server-url: http://localhost:8090
+  use-resource-role-mappings: true
+  bearer-only: true
+  client-id: test-keycloak
+  client-secret: wJN4P2jPHEj3belkmp535MnuRZVj6QEh
+
